@@ -3,599 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatFreeAI - Advanced Translation Tool</title>
-    <meta name="description" content="Free online translation tool supporting 100+ languages. Translate text instantly with AI-powered accuracy.">
-    <meta name="keywords" content="translation, translator, language, AI translation, free translator, online translator">
+    <meta name="description" content="ChatFreeAI Translation Tool - Translate text between 100+ languages instantly with our free online translator">
+    <meta name="keywords" content="translator, translation tool, language translation, free translator, Google Translate, multilingual">
+    <meta name="author" content="ChatFreeAI">
+    <title>ChatFreeAI - Free Online Translation Tool</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #4cc9f0;
-            --dark: #212529;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
             --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
             --gray: #6c757d;
             --light-gray: #e9ecef;
-            --success: #2ec4b6;
-            --warning: #ff9f1c;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
             --transition: all 0.3s ease;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            --radius: 12px;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
-            color: var(--dark);
+            font-family: 'Roboto', sans-serif;
             line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
+            color: var(--dark);
+            background-color: #f5f7ff;
         }
-        
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         /* Header Styles */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
         }
-        
-        nav {
+
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
         }
-        
+
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
-        
-        .logo-placeholder {
-            width: 5px;
-            height: 5px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 20px;
             font-weight: bold;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
             color: var(--primary);
         }
-        
-        .logo-text span {
-            color: var(--secondary);
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
-        
+
         .nav-links {
             display: flex;
-            list-style: none;
+            gap: 2rem;
         }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
+
         .nav-links a {
+            color: white;
             text-decoration: none;
-            color: var(--dark);
             font-weight: 500;
             transition: var(--transition);
             position: relative;
-            padding: 5px 0;
         }
-        
+
         .nav-links a:hover {
-            color: var(--primary);
+            color: var(--success);
         }
-        
+
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--primary);
+            background-color: var(--success);
             transition: var(--transition);
         }
-        
+
         .nav-links a:hover::after {
             width: 100%;
         }
-        
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
             border: none;
+            color: white;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
         }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        
-        .btn-secondary:hover {
-            background: #6506a3;
-        }
-        
+
         /* Hero Section */
         .hero {
-            padding: 100px 0 80px;
-            display: flex;
-            align-items: center;
-            min-height: 80vh;
-            position: relative;
-            overflow: hidden;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #e0e7ff, #dbeafe);
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 3rem;
         }
-        
-        .hero-content {
-            flex: 1;
-            padding-right: 50px;
-            position: relative;
-            z-index: 2;
-        }
-        
+
         .hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-text-fill-color: transparent;
         }
-        
+
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
             color: var(--gray);
-            margin-bottom: 40px;
-            max-width: 600px;
         }
-        
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            transform: perspective(1000px) rotateY(-10deg);
-            transition: var(--transition);
-        }
-        
-        .hero-image:hover img {
-            transform: perspective(1000px) rotateY(0);
-        }
-        
-        .hero-pattern {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(114, 9, 183, 0.05) 100%);
-            border-radius: 0 0 0 100px;
-            z-index: 0;
-        }
-        
+
         /* Translation Tool */
-        .tool-section {
+        .translation-tool {
             background: white;
-            border-radius: var(--radius);
-            padding: 50px;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            margin: 40px 0;
-            position: relative;
-            z-index: 2;
+            padding: 2rem;
+            margin-bottom: 3rem;
         }
-        
-        .section-title {
+
+        .tool-header {
             text-align: center;
-            margin-bottom: 50px;
-            font-size: 2.8rem;
-            color: var(--dark);
+            margin-bottom: 2rem;
         }
-        
-        .section-title span {
+
+        .tool-header h2 {
+            font-size: 2.2rem;
             color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 5px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            margin: 15px auto;
-            border-radius: 5px;
+
+        .tool-header p {
+            color: var(--gray);
         }
-        
-        .translation-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
+
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 50px 1fr;
+            gap: 1.5rem;
         }
-        
-        .translation-box {
-            flex: 1;
-            min-width: 300px;
-        }
-        
+
         .language-selector {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
+            margin-bottom: 1rem;
         }
-        
-        .language-selector i {
-            color: var(--gray);
-            font-size: 20px;
-            cursor: pointer;
-            transition: var(--transition);
+
+        .select-box {
+            flex: 1;
+            margin-right: 1rem;
         }
-        
-        .language-selector i:hover {
-            color: var(--primary);
-            transform: rotate(180deg);
+
+        .select-box:last-child {
+            margin-right: 0;
         }
-        
-        .auto-detect {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .auto-detect input {
-            width: 18px;
-            height: 18px;
-        }
-        
-        .auto-detect label {
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
+
         select {
-            padding: 12px 18px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
             background: white;
             font-size: 1rem;
-            width: 45%;
+        }
+
+        .swap-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             transition: var(--transition);
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 12px;
+            margin-top: 2.5rem;
         }
-        
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+
+        .swap-btn:hover {
+            background: var(--secondary);
+            transform: rotate(180deg);
         }
-        
+
+        .text-area {
+            display: flex;
+            flex-direction: column;
+        }
+
         textarea {
             width: 100%;
-            height: 200px;
-            padding: 20px;
-            border-radius: var(--radius);
-            border: 1px solid #ddd;
-            font-size: 1.1rem;
+            min-height: 200px;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--light-gray);
             resize: vertical;
-            transition: var(--transition);
-            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
-        
+
         textarea:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
-        
+
         .translate-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            margin-top: 20px;
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
         }
-        
-        .translate-btn i {
-            margin-right: 10px;
+
+        .translate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
         }
-        
+
+        .detected-language {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: var(--gray);
+        }
+
         /* Features */
         .features {
-            padding: 100px 0;
-            background: linear-gradient(to bottom, #ffffff, #f0f4ff);
-            position: relative;
-            overflow: hidden;
+            background: white;
+            padding: 4rem 0;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin: 4rem 0;
         }
-        
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-            position: relative;
-            z-index: 1;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
-        
+
         .feature-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: var(--radius);
             text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 0;
-            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            background: var(--light);
             transition: var(--transition);
         }
-        
-        .feature-card:hover::before {
-            height: 100%;
-        }
-        
+
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
         }
-        
+
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(67, 97, 238, 0.1);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 32px;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
             color: var(--primary);
-            transition: var(--transition);
         }
-        
-        .feature-card:hover .feature-icon {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .feature-title {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .feature-desc {
-            color: var(--gray);
-            font-size: 1.05rem;
-        }
-        
+
         /* About Tool */
         .about-tool {
-            padding: 100px 0;
+            background: linear-gradient(135deg, #f0f4ff, #e6f0ff);
+            padding: 4rem 0;
+            border-radius: var(--border-radius);
+            margin: 4rem 0;
         }
-        
+
         .about-content {
+            max-width: 800px;
+            margin: 0 auto;
             background: white;
-            border-radius: var(--radius);
-            padding: 50px;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
+        }
+
+        .about-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
             line-height: 1.8;
         }
-        
-        .about-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            color: var(--primary);
+
+        /* Supported Languages */
+        .languages-section {
+            margin: 4rem 0;
         }
-        
-        .about-content p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            color: var(--dark);
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-        
-        .about-content ul {
-            margin: 30px 0;
-            padding-left: 30px;
+
+        .language-item {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
-        
-        .about-content li {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+
+        .language-item:hover {
+            transform: translateY(-5px);
+            background: var(--light);
         }
-        
+
+        .language-flag {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
         /* Footer */
         footer {
             background: var(--dark);
             color: white;
-            padding: 80px 0 30px;
-            position: relative;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
         }
-        
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
-        
+
         .footer-col h3 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
             position: relative;
-            display: inline-block;
+            padding-bottom: 0.5rem;
         }
-        
+
         .footer-col h3::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: 0;
             left: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--primary);
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
         }
-        
+
         .footer-links {
             list-style: none;
         }
-        
+
         .footer-links li {
-            margin-bottom: 12px;
+            margin-bottom: 0.8rem;
         }
-        
+
         .footer-links a {
-            color: #ddd;
+            color: #adb5bd;
             text-decoration: none;
             transition: var(--transition);
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        
+
         .footer-links a:hover {
-            color: var(--accent);
-            transform: translateX(5px);
+            color: var(--success);
+            padding-left: 5px;
         }
-        
+
         .social-links {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 1rem;
+            margin-top: 1rem;
         }
-        
+
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
+            background: rgba(255,255,255,0.1);
             color: white;
             transition: var(--transition);
         }
-        
+
         .social-links a:hover {
             background: var(--primary);
             transform: translateY(-5px);
         }
-        
+
         .copyright {
             text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #adb5bd;
             font-size: 0.9rem;
         }
-        
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding: 80px 0 60px;
-            }
-            
-            .hero-content {
-                padding-right: 0;
-                margin-bottom: 40px;
-            }
-            
-            .hero p {
-                margin: 0 auto 30px;
-            }
-            
-            .hero-image {
-                width: 100%;
-            }
-            
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
             
-            .tool-section {
-                padding: 30px;
+            .mobile-menu-btn {
+                display: block;
             }
-        }
-        
-        @media (max-width: 600px) {
+            
             .hero h1 {
                 font-size: 2.5rem;
             }
             
-            .section-title {
-                font-size: 2.2rem;
+            .tool-container {
+                grid-template-columns: 1fr;
             }
             
-            .about-content {
-                padding: 30px;
+            .swap-btn {
+                transform: rotate(90deg);
+                margin: 0 auto 1rem;
             }
         }
     </style>
@@ -603,146 +518,137 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="container">
-            <nav>
-                <div class="logo-container">
-    <a href="index.php" class="logo-link">
-        <img src="translation-tool/chatfreeai.png" alt="ChatFreeAI Logo" class="site-logo">
-    </a>
-                <div class="logo-container">
-                    <div class="logo">CF</div>
-                    <div class="logo-text">ChatFree<span>AI</span></div>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#tool">Translator</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#languages">Languages</a></li>
-                </ul>
-                <a href="#tool" class="btn">Translate Now</a>
+        <div class="container navbar">
+            <div class="logo-container">
+                <div class="logo">CF</div>
+                <div class="logo-text">ChatFreeAI</div>
+            </div>
+            <nav class="nav-links">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#features"><i class="fas fa-star"></i> Features</a>
+                <a href="#languages"><i class="fas fa-globe"></i> Languages</a>
+                <a href="#about"><i class="fas fa-info-circle"></i> About</a>
             </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <h1>Break Language Barriers with AI Translation</h1>
-                <p>ChatFreeAI delivers accurate, natural translations instantly. Translate text, documents, and websites in over 100 languages with our advanced AI technology.</p>
-                <a href="#tool" class="btn">Start Translating</a>
-            </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80" alt="Global Communication">
-            </div>
+            <h1>Translate Without Boundaries</h1>
+            <p>ChatFreeAI is a modern translation tool that breaks down language barriers with state-of-the-art technology. Translate text between 100+ languages instantly.</p>
         </div>
-        <div class="hero-pattern"></div>
     </section>
 
     <!-- Translation Tool -->
-    <section id="tool">
-        <div class="container">
-            <div class="tool-section">
-                <h2 class="section-title">AI <span>Translation Tool</span></h2>
-                <div class="auto-detect">
-                    <input type="checkbox" id="auto-detect" checked>
-                    <label for="auto-detect">Detect Language Automatically</label>
-                </div>
-                <div class="translation-container">
-                    <div class="translation-box">
-                        <div class="language-selector">
-                            <select id="source-lang">
-                                <option value="auto">Detect Language</option>
-                                <option value="en">English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                                <option value="de">German</option>
-                                <option value="it">Italian</option>
-                                <option value="pt">Portuguese</option>
-                                <option value="ja">Japanese</option>
-                                <option value="ru">Russian</option>
-                                <option value="bn">Bengali</option>
-                                <option value="ar">Arabic</option>
-                                <option value="sa">Sanskrit</option>
-                                <option value="zh">Chinese</option>
-                                <option value="hi">Hindi</option>
-                                <option value="ko">Korean</option>
-                                <option value="tr">Turkish</option>
-                                <option value="vi">Vietnamese</option>
-                                <option value="th">Thai</option>
-                            </select>
-                            <i class="fas fa-exchange-alt" id="swap-languages"></i>
-                            <select id="target-lang">
-                                <option value="en" selected>English</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                                <option value="de">German</option>
-                                <option value="it">Italian</option>
-                                <option value="pt">Portuguese</option>
-                                <option value="ja">Japanese</option>
-                                <option value="ru">Russian</option>
-                                <option value="bn">Bengali</option>
-                                <option value="ar">Arabic</option>
-                                <option value="sa">Sanskrit</option>
-                                <option value="zh">Chinese</option>
-                                <option value="hi">Hindi</option>
-                                <option value="ko">Korean</option>
-                                <option value="tr">Turkish</option>
-                                <option value="vi">Vietnamese</option>
-                                <option value="th">Thai</option>
-                            </select>
+    <section class="container">
+        <div class="translation-tool">
+            <div class="tool-header">
+                <h2>Translation Tool</h2>
+                <p>Enter text and our system will automatically detect the language</p>
+            </div>
+            
+            <div class="tool-container">
+                <div class="input-section">
+                    <div class="language-selector">
+                        <div class="select-box">
+                            <label for="source-text">Source Text (Auto-Detect)</label>
+                            <textarea id="source-text" placeholder="Enter text to translate...">Hello! Welcome to ChatFreeAI, your modern translation tool.</textarea>
                         </div>
-                        <textarea id="source-text" placeholder="Enter text to translate...">Hello! Welcome to our modern translation tool. Type or paste your text here to translate it instantly.</textarea>
                     </div>
-                    <div class="translation-box">
-                        <div class="language-selector">
-                            <span>Translation</span>
-                            <button class="btn" style="padding: 8px 18px; font-size: 0.9rem;" id="copy-btn">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
+                </div>
+                
+                <div class="swap-container">
+                    <button class="swap-btn" id="swap-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="output-section">
+                    <div class="language-selector">
+                        <div class="select-box">
+                            <label for="target-lang">Translate To</label>
+                            <select id="target-lang">
+                                <option value="es">Spanish</option>
+                                <option value="en" selected>English</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ru">Russian</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="bn">Bengali</option>
+                                <option value="ar">Arabic</option>
+                                <option value="sa">Sanskrit</option>
+                                <option value="hi">Hindi</option>
+                                <option value="zh-CN">Chinese (Simplified)</option>
+                                <option value="ko">Korean</option>
+                                <option value="it">Italian</option>
+                                <option value="nl">Dutch</option>
+                                <option value="el">Greek</option>
+                                <option value="tr">Turkish</option>
+                                <option value="vi">Vietnamese</option>
+                                <option value="th">Thai</option>
+                            </select>
                         </div>
+                    </div>
+                    <div class="text-area">
                         <textarea id="translated-text" placeholder="Translation will appear here..." readonly></textarea>
-                        <button class="btn translate-btn" id="translate-btn">
-                            <i class="fas fa-language"></i> Translate Text
-                        </button>
                     </div>
                 </div>
             </div>
+            
+            <div class="detected-language">
+                <span id="lang-detect">Detected Language: English</span>
+            </div>
+            
+            <button class="translate-btn" id="translate-btn">
+                <i class="fas fa-exchange-alt"></i> Translate Text
+            </button>
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- Features Section -->
     <section class="features" id="features">
         <div class="container">
-            <h2 class="section-title">Powerful <span>Features</span></h2>
+            <div class="section-header">
+                <h2>Why Choose ChatFreeAI</h2>
+                <p>Our translation tool offers the best features for your communication needs</p>
+            </div>
+            
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h3 class="feature-title">100+ Languages</h3>
-                    <p class="feature-desc">Translate between all major languages and regional dialects with excellent accuracy.</p>
-                </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
-                    <h3 class="feature-title">Instant Translation</h3>
-                    <p class="feature-desc">Get translations in milliseconds with our optimized AI engine.</p>
+                    <h3>Lightning Fast</h3>
+                    <p>Get translations in milliseconds with our optimized technology</p>
                 </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>100+ Languages</h3>
+                    <p>Translate between a wide variety of global languages</p>
+                </div>
+                
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3 class="feature-title">AI-Powered</h3>
-                    <p class="feature-desc">Advanced neural networks understand context for natural-sounding translations.</p>
+                    <h3>Auto Detection</h3>
+                    <p>Our system automatically detects the source language</p>
                 </div>
+                
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-lock"></i>
                     </div>
-                    <h3 class="feature-title">Secure & Private</h3>
-                    <p class="feature-desc">Your data is never stored or shared. All translations are processed securely.</p>
+                    <h3>Secure & Private</h3>
+                    <p>Your data is never stored or shared with third parties</p>
                 </div>
             </div>
         </div>
@@ -753,40 +659,101 @@
         <div class="container">
             <div class="about-content">
                 <h2>About Our Translation Tool</h2>
-                <p>ChatFreeAI Translation Tool is a cutting-edge solution that leverages advanced artificial intelligence to provide accurate and natural translations in over 100 languages. Our tool is designed to break down language barriers and facilitate global communication.</p>
+                <p>ChatFreeAI Translation Tool leverages advanced machine learning algorithms to provide accurate, real-time translations between over 100 languages. Our system uses the same technology that powers professional translation services, now available to everyone for free.</p>
                 
-                <p>Unlike traditional translation services, our AI-powered system understands context, idiomatic expressions, and cultural nuances, delivering translations that sound natural to native speakers.</p>
+                <p>Unlike traditional translation tools, ChatFreeAI automatically detects the source language, eliminating the need for manual selection. This makes the translation process faster and more intuitive, especially when working with unfamiliar languages.</p>
                 
-                <h3>Key Benefits:</h3>
-                <ul>
-                    <li><strong>Accuracy</strong>: Our AI model has been trained on billions of multilingual texts to deliver precise translations</li>
-                    <li><strong>Speed</strong>: Translate text instantly without delays or lag</li>
-                    <li><strong>Multi-language Support</strong>: From common languages like English and Spanish to regional dialects</li>
-                    <li><strong>Context Awareness</strong>: Understands the context of sentences for more accurate translations</li>
-                    <li><strong>Completely Free</strong>: No subscriptions or hidden fees</li>
-                </ul>
+                <p>Our tool is designed with user experience in mind. The clean, modern interface ensures that anyone can start translating text immediately without a learning curve. Whether you're a student, traveler, or business professional, ChatFreeAI helps you communicate across language barriers.</p>
                 
-                <h3>How It Works</h3>
-                <p>Our translation tool uses a sophisticated neural machine translation system that analyzes text at multiple levels:</p>
-                <ol>
-                    <li>Text is broken down into linguistic components</li>
-                    <li>AI analyzes context and meaning</li>
-                    <li>The system generates translations preserving original intent</li>
-                    <li>Results are refined for natural language flow</li>
-                </ol>
-                
-                <p>Whether you're traveling, conducting business internationally, or learning a new language, ChatFreeAI provides reliable translations whenever you need them.</p>
+                <p>We continuously update our translation models to improve accuracy and add support for new languages and dialects. The tool is completely free to use with no hidden fees or limitations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Languages -->
+    <section class="languages-section" id="languages">
+        <div class="container">
+            <div class="section-header">
+                <h2>Supported Languages</h2>
+                <p>We support translation between these languages and many more</p>
+            </div>
+            
+            <div class="languages-grid">
+                <div class="language-item">
+                    <div class="language-flag">🇬🇧</div>
+                    <h3>English</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇪🇸</div>
+                    <h3>Spanish</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇫🇷</div>
+                    <h3>French</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇩🇪</div>
+                    <h3>German</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇯🇵</div>
+                    <h3>Japanese</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇷🇺</div>
+                    <h3>Russian</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇵🇹</div>
+                    <h3>Portuguese</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇧🇩</div>
+                    <h3>Bengali</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇸🇦</div>
+                    <h3>Arabic</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇮🇳</div>
+                    <h3>Sanskrit</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇨🇳</div>
+                    <h3>Chinese</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇮🇹</div>
+                    <h3>Italian</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇳🇱</div>
+                    <h3>Dutch</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇰🇷</div>
+                    <h3>Korean</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇹🇷</div>
+                    <h3>Turkish</h3>
+                </div>
+                <div class="language-item">
+                    <div class="language-flag">🇮🇳</div>
+                    <h3>Hindi</h3>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3>ChatFreeAI</h3>
-                    <p>Breaking language barriers with cutting-edge AI translation technology.</p>
+                    <p>Breaking language barriers with cutting-edge translation technology. Making global communication simple and accessible for everyone.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -794,170 +761,173 @@
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+                
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#tool">Translation Tool</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="#languages"><i class="fas fa-chevron-right"></i> Languages</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
                     </ul>
                 </div>
+                
                 <div class="footer-col">
-                    <h3>Languages</h3>
+                    <h3>Popular Languages</h3>
                     <ul class="footer-links">
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">Spanish</a></li>
-                        <li><a href="#">French</a></li>
-                        <li><a href="#">German</a></li>
-                        <li><a href="#">Japanese</a></li>
-                        <li><a href="#">Russian</a></li>
-                        <li><a href="#">Arabic</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> English</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Spanish</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> French</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> German</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Japanese</a></li>
                     </ul>
                 </div>
+                
                 <div class="footer-col">
                     <h3>Contact Us</h3>
                     <ul class="footer-links">
-                        <li><i class="fas fa-envelope"></i> contact@chatfreeai.com</li>
-                        <li><i class="fas fa-map-marker-alt"></i> San Francisco, CA</li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> contact@chatfreeai.com</a></li>
                     </ul>
                 </div>
             </div>
+            
             <div class="copyright">
-                &copy; 2023 ChatFreeAI. All rights reserved.
+                <p>&copy; 2023 ChatFreeAI Translation Tool. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Google Translate API integration
-        async function translateText(text, sourceLang, targetLang) {
+        // Translation function using Google Translate API
+        async function translateText(text, targetLang) {
             try {
-                // Show loading state
-                const btn = document.getElementById('translate-btn');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
-                btn.disabled = true;
-                
-                // Using Google Translate API without API key
-                const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
-                
-                if (!response.ok) {
-                    throw new Error('Translation failed');
-                }
-                
+                // Google Translate API endpoint
+                const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
                 const data = await response.json();
                 
-                // Extract translated text
-                let translatedText = '';
-                data[0].forEach(item => {
-                    if (item[0]) {
-                        translatedText += item[0];
-                    }
-                });
-                
-                // Update the translated text area
-                document.getElementById('translated-text').value = translatedText;
-                
-                // Reset button
-                btn.innerHTML = '<i class="fas fa-language"></i> Translate Text';
-                btn.disabled = false;
-                
-                return translatedText;
+                if (data && data[0] && data[0][0] && data[0][0][0]) {
+                    return data[0][0][0];
+                } else {
+                    throw new Error('Translation failed');
+                }
             } catch (error) {
                 console.error('Translation error:', error);
-                document.getElementById('translated-text').value = 'Translation failed. Please try again.';
-                
-                const btn = document.getElementById('translate-btn');
-                btn.innerHTML = '<i class="fas fa-language"></i> Translate Text';
-                btn.disabled = false;
-                
-                return '';
+                return "Translation error. Please try again.";
             }
         }
         
-        // Translation functionality
-        document.getElementById('translate-btn').addEventListener('click', async function() {
-            const sourceText = document.getElementById('source-text').value;
-            const autoDetect = document.getElementById('auto-detect').checked;
-            const targetLang = document.getElementById('target-lang').value;
-            
-            if (!sourceText.trim()) {
-                alert('Please enter text to translate');
+        // Language detection function
+        async function detectLanguage(text) {
+            try {
+                const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(text)}`);
+                const data = await response.json();
+                
+                if (data && data[2]) {
+                    return data[2]; // Returns the detected language code
+                } else {
+                    throw new Error('Language detection failed');
+                }
+            } catch (error) {
+                console.error('Detection error:', error);
+                return "en"; // Default to English
+            }
+        }
+        
+        // Get language name from code
+        function getLanguageName(code) {
+            const languages = {
+                'en': 'English',
+                'es': 'Spanish',
+                'fr': 'French',
+                'de': 'German',
+                'ja': 'Japanese',
+                'ru': 'Russian',
+                'pt': 'Portuguese',
+                'bn': 'Bengali',
+                'ar': 'Arabic',
+                'sa': 'Sanskrit',
+                'hi': 'Hindi',
+                'zh-CN': 'Chinese',
+                'ko': 'Korean',
+                'it': 'Italian',
+                'nl': 'Dutch',
+                'el': 'Greek',
+                'tr': 'Turkish',
+                'vi': 'Vietnamese',
+                'th': 'Thai'
+            };
+            return languages[code] || code;
+        }
+
+        // DOM Elements
+        const sourceText = document.getElementById('source-text');
+        const translatedText = document.getElementById('translated-text');
+        const targetLang = document.getElementById('target-lang');
+        const translateBtn = document.getElementById('translate-btn');
+        const swapBtn = document.getElementById('swap-btn');
+        const langDetect = document.getElementById('lang-detect');
+
+        // Translate Button Event
+        translateBtn.addEventListener('click', async () => {
+            if (sourceText.value.trim() === '') {
+                translatedText.value = 'Please enter text to translate';
                 return;
             }
             
-            let sourceLang = document.getElementById('source-lang').value;
+            // Show loading state
+            translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
+            translateBtn.disabled = true;
             
-            // If auto-detect is enabled, set sourceLang to 'auto'
-            if (autoDetect) {
-                sourceLang = 'auto';
-            }
+            const text = sourceText.value;
+            const target = targetLang.value;
             
-            // Call translation function
-            await translateText(sourceText, sourceLang, targetLang);
-        });
-        
-        // Copy functionality
-        document.getElementById('copy-btn').addEventListener('click', function() {
-            const translatedText = document.getElementById('translated-text');
-            translatedText.select();
-            document.execCommand('copy');
-            
-            // Show copied message
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            
-            setTimeout(() => {
-                this.innerHTML = originalText;
-            }, 2000);
-        });
-        
-        // Swap languages functionality
-        document.getElementById('swap-languages').addEventListener('click', function() {
-            const sourceLang = document.getElementById('source-lang');
-            const targetLang = document.getElementById('target-lang');
-            
-            // Swap values
-            const temp = sourceLang.value;
-            sourceLang.value = targetLang.value;
-            targetLang.value = temp;
-            
-            // Also swap text content if both fields have text
-            const sourceText = document.getElementById('source-text').value;
-            const translatedText = document.getElementById('translated-text').value;
-            
-            if (sourceText && translatedText) {
-                document.getElementById('source-text').value = translatedText;
-                document.getElementById('translated-text').value = sourceText;
-            }
-        });
-        
-        // Auto-detect toggle
-        document.getElementById('auto-detect').addEventListener('change', function() {
-            const sourceLangSelect = document.getElementById('source-lang');
-            sourceLangSelect.disabled = this.checked;
-            
-            if (this.checked) {
-                sourceLangSelect.value = 'auto';
-            }
-        });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
+            try {
+                // Detect language first
+                const detectedLang = await detectLanguage(text);
+                langDetect.textContent = `Detected Language: ${getLanguageName(detectedLang)}`;
                 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+                // Then translate
+                const translation = await translateText(text, target);
+                translatedText.value = translation;
+            } catch (error) {
+                translatedText.value = 'Translation error. Please try again.';
+            }
+            
+            // Reset button
+            translateBtn.innerHTML = '<i class="fas fa-exchange-alt"></i> Translate Text';
+            translateBtn.disabled = false;
         });
-        
+
+        // Swap Languages
+        swapBtn.addEventListener('click', async () => {
+            const tempText = sourceText.value;
+            sourceText.value = translatedText.value;
+            translatedText.value = tempText;
+            
+            // Re-detect language for the new source text
+            if (sourceText.value.trim() !== '') {
+                const detectedLang = await detectLanguage(sourceText.value);
+                langDetect.textContent = `Detected Language: ${getLanguageName(detectedLang)}`;
+            }
+        });
+
         // Initialize with a translation
-        window.addEventListener('DOMContentLoaded', () => {
-            const sourceText = document.getElementById('source-text').value;
-            translateText(sourceText, 'en', 'es');
+        window.addEventListener('DOMContentLoaded', async () => {
+            const text = sourceText.value;
+            const target = targetLang.value;
+            
+            try {
+                // Detect language first
+                const detectedLang = await detectLanguage(text);
+                langDetect.textContent = `Detected Language: ${getLanguageName(detectedLang)}`;
+                
+                // Then translate
+                const translation = await translateText(text, target);
+                translatedText.value = translation;
+            } catch (error) {
+                translatedText.value = 'Welcome to ChatFreeAI Translation Tool';
+            }
         });
     </script>
 </body>
